@@ -1,10 +1,10 @@
-package com.mysite.sbb3;
+package com.mysite.sbb3.question;
 
+import com.mysite.sbb3.answer.Answer;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
