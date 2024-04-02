@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
@@ -15,7 +16,8 @@ public class QuestionController {
 
     // @RequiredArgsConstructor 애너테이션의 생성자 방식으로 객체 주입
     // final이 붙은 속성을 포함하는 생성자를 자동으로 만들어준다.
-    private final QuestionRepository questionRepository;
+    // private final QuestionRepository questionRepository;
+    private final QuestionService questionService;
 
 
     // @ResponseBody : 템플릿을 사용하므로 @ResponseBody 애너테이션은 필요없음
@@ -26,8 +28,17 @@ public class QuestionController {
      */
     @GetMapping("/question/list")
     public String list(Model model) {
-        List<Question> questionList = this.questionRepository.findAll();
+        // List<Question> questionList = this.questionRepository.findAll();
+        List<Question>  questionList = questionService.getList();
         model.addAttribute("questionList", questionList);
         return "question_list";
+    }
+
+    // 숫자처럼 변하는 id값을 얻을 때에는 @PathVariable 애너테이션을 사용한다.
+    @GetMapping(value = "/question/detail/{id}")
+    public String detail(Model model, @PathVariable Integer id) {
+        Question question = this.questionService.getQuestion(id);
+        model.addAttribute("question", question);
+        return "question_detail";
     }
 }
