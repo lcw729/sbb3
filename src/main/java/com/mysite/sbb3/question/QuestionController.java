@@ -5,11 +5,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
-
+@RequestMapping("/question")
 @RequiredArgsConstructor
 @Controller
 public class QuestionController {
@@ -26,7 +27,7 @@ public class QuestionController {
      Model 객체에 값을 담아 두면 템플릿에서 그 값을 사용할 수 있다.
      컨트롤러 메서드에서 매개변수 지정하면 스프링 부터가 자동으로 Model 객체 생성한다.
      */
-    @GetMapping("/question/list")
+    @GetMapping("/list")
     public String list(Model model) {
         // List<Question> questionList = this.questionRepository.findAll();
         List<Question>  questionList = questionService.getList();
@@ -35,7 +36,7 @@ public class QuestionController {
     }
 
     // 숫자처럼 변하는 id값을 얻을 때에는 @PathVariable 애너테이션을 사용한다.
-    @GetMapping(value = "/question/detail/{id}")
+    @GetMapping(value = "/detail/{id}")
     public String detail(Model model, @PathVariable Integer id) {
         Question question = this.questionService.getQuestion(id);
         model.addAttribute("question", question);
