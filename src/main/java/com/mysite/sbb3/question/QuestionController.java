@@ -1,8 +1,11 @@
 package com.mysite.sbb3.question;
 
+import com.mysite.sbb3.answer.AnswerForm;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,22 +37,26 @@ public class QuestionController {
 
     // 숫자처럼 변하는 id값을 얻을 때에는 @PathVariable 애너테이션을 사용한다.
     @GetMapping(value = "/detail/{id}")
-    public String detail(Model model, @PathVariable Integer id) {
+    public String detail(Model model, @PathVariable Integer id,
+                         AnswerForm answerForm) {
         Question question = this.questionService.getQuestion(id);
         model.addAttribute("question", question);
         return "question_detail";
     }
 
     @GetMapping("/create")
-    public String questionCreate(){
+    public String questionCreate(QuestionForm questionForm){
         return "question_form";
     }
     @PostMapping("/create")
     public String questionCreate(
-            @RequestParam(name = "subject") String subject,
-            @RequestParam(name = "content") String content) {
-        System.out.println("create question");
-        questionService.create(subject, content);
+            @Valid QuestionForm questionForm,
+            BindingResult bindingResult
+    ) {
+        if(bindingResult.hasErrors()){
+            return "question_form";
+        }
+        questionService.create(questionForm.getSubject(), questionForm.getContent());
         return "redirect:/question/list";
     }
 }
