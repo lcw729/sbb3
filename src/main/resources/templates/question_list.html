@@ -12,7 +12,7 @@
         <tbody>
         <!-- th: 타임리프에서 사용하는 속성 -->
         <tr th:each="question, loop: ${paging}">
-            <td th:text="${loop.count}"></td>
+            <td th:text="${paging.getTotalElements - (paging.number * paging.size) - loop.index}"></td>
             <td>
                 <!-- URL은 반드시 @{}사이에 적어주어야 한다. -->
                 <!-- 타임리프에서 문자열과 자바 객체 값을 더할 때는 반드시 ||로 좌우를 감싸야 한다. -->
