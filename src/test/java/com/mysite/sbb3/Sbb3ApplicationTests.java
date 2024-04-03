@@ -4,6 +4,7 @@ import com.mysite.sbb3.answer.Answer;
 import com.mysite.sbb3.answer.AnswerRepository;
 import com.mysite.sbb3.question.Question;
 import com.mysite.sbb3.question.QuestionRepository;
+import com.mysite.sbb3.question.QuestionService;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,6 +23,9 @@ class Sbb3ApplicationTests {
     // @Autowired 애너테이션을 해당 변수에 적용하면, 스프링 부트가 객체를 자동으로 주입
     @Autowired
     private QuestionRepository questionRepository;
+
+    @Autowired
+    private QuestionService questionService;
 
     @Autowired
     private AnswerRepository answerRepository;
@@ -121,6 +125,14 @@ class Sbb3ApplicationTests {
         assertEquals(1, answerList.size());
         assertEquals("네 자동으로 생성됩니다.", answerList.get(0).getContent());
 
+    }
 
+    @Test
+    void TestJpa(){
+        for (int i=1; i<=300; i++) {
+            String subject = String.format("테스트 데이터입니다:[%03d]", i);
+            String content = "내용무";
+            this.questionService.create(subject, content);
+        }
     }
 }
